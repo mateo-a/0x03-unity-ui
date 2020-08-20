@@ -1,8 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
+///<summary>Player Controller</summary>
 public class PlayerController : MonoBehaviour
 {
+    public GameObject winlose;
+    public Image winLoseBG;
+    public Text winLoseText;
+    public Text scoreText;
+    public Text healthText;
     public float speed = 2500f;
     private int score = 0;
     public int health = 5;
@@ -35,17 +43,24 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Pickup")
         {
             score++;
-            Debug.Log($"Score: {score}");
+            // Debug.Log($"Score: {score}");
+            SetScoreText();
             Destroy(other.gameObject);
         }
         if (other.tag == "Trap")
         {
             health--;
-            Debug.Log($"Health: {health}");
+            // Debug.Log($"Health: {health}");
+            SetHealthText();
         }
         if (other.tag == "Goal")
         {
-            Debug.Log("You win!");
+            // Debug.Log("You win!");
+            winlose.SetActive(true);
+            winLoseBG.color = Color.green;
+            winLoseText.color = Color.black;
+            winLoseText.text = "You win!";
+            StartCoroutine(LoadScene(3));
         }
     }
 
@@ -53,10 +68,34 @@ public class PlayerController : MonoBehaviour
     {
         if (health == 0)
         {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene("maze", LoadSceneMode.Single);
+            // Debug.Log("Game Over!");
+            winlose.SetActive(true);
+            winLoseBG.color = Color.red;
+            winLoseText.color = Color.white;
+            winLoseText.text = "Game Over!";
+            StartCoroutine(LoadScene(3));
             health = 5;
             score = 0;
         }
+        
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("menu", LoadSceneMode.Single);
+        }
+    }
+
+    void SetScoreText()
+    {
+        scoreText.text = "Score: " + score.ToString();
+    }
+
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health.ToString();
+    }
+    IEnumerator LoadScene(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("maze", LoadSceneMode.Single);
     }
 }
