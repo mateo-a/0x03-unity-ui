@@ -4535,6 +4535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f384d3a86989d5048a5bbea1406d896c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winlose: {fileID: 1500544181}
+  winLoseBG: {fileID: 1500544183}
+  winLoseText: {fileID: 286292290}
   scoreText: {fileID: 1798030354}
   healthText: {fileID: 48563928}
   speed: 2500
